@@ -8,7 +8,7 @@ public class Main_ {
         int playAgain = -1;
 
         while (true) {
-
+            //
             try {
                 Board board = new Board();
                 System.out.println("Word: " + board.getWord().toUpperCase() + "\n");
@@ -26,15 +26,15 @@ public class Main_ {
             }
             while (!choiceIsValid) {
                 try {
-			playAgain = Integer.parseInt(JOptionPane.showInputDialog(null, "Play again?"
-			+ "\n0 - yes\n1 - no"));
-		}
-		catch (NumberFormatException nfe){
-			System.err.println("You must enter an integer.");
-			System.err.println("Exception: " + nfe + "\n");
-		}
+			        playAgain = Integer.parseInt(JOptionPane.showInputDialog(null, "Play again?"
+					+ "\n0 - yes\n1 - no"));
+		        }
+		        catch (NumberFormatException nfe){
+			        System.err.println("You must enter an integer.");
+			        System.err.println("Exception: " + nfe + "\n");
+		        }
                 if (playAgain == 0 || playAgain == 1) { choiceIsValid = true; }
-	    }
+	        }
             if (playAgain == 1) { break; }
             
         }
