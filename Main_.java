@@ -27,8 +27,7 @@ public class Main_ {
             while (!choiceIsValid) {
                 try {
 			playAgain = Integer.parseInt(JOptionPane.showInputDialog(null, "Play again?"
-										 + "\n0 - yes"
-										 + "\n1 - no"));
+			+ "\n0 - yes\n1 - no"));
 		}
 		catch (NumberFormatException nfe){
 			System.err.println("You must enter an integer.");
