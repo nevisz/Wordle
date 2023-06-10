@@ -42,7 +42,6 @@ public class BoardPanel extends JPanel {
 
         for (int i = 0; i<6; i++) {
             for (int i2 = 0; i2<5; i2++) {
-
                 Tile tempTile = tiles.get(Integer.toString(i)+Integer.toString(i2));
 
                 g2.setPaint(new Color(tempTile.getFillColour()));
@@ -53,13 +52,12 @@ public class BoardPanel extends JPanel {
                 g2.setFont(new Font("Aharoni", Font.BOLD, 20));
                 g2.setPaint(Color.WHITE);
                 g2.drawString(tempTile.getLetter(),tempTile.getXLetter(),tempTile.getYLetter());
-
             }
         }
 
         g2.setStroke(new BasicStroke(1));
         g2.setPaint(lightGrey);
-        g2.drawLine(0,438, 310, 438); // starting point, endpoint
+        g2.drawLine(0,438,310,438); // starting point, endpoint
 
     }
 
