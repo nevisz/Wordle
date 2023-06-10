@@ -1,14 +1,18 @@
 
+/*
+ * This class contains all of the fields of a Wordle tile, as well as getters and setters
+ */
+
 public class Tile {
 
     private String letter;
-    private int xValue; private int yValue; // coordinate of square and square border
-    private int xLetter; private int yLetter; // coordinate of letter
+    private int xValue; private int yValue; // coordinate of the tile and its border
+    private int xLetter; private int yLetter; // coordinate of letter on tile
 
     final private int sideLength = 50;
     final private int borderColour = 0x555555;
     private int fillColour;
-    
+
     public Tile (int xValue, int yValue, int xLetter, int yLetter) {
         this.xValue = xValue;
         this.yValue = yValue;
