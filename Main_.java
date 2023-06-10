@@ -29,7 +29,7 @@ public class Main_ {
                     playAgain = Integer.parseInt(JOptionPane.showInputDialog(null, "Play again?"
                     + "\n0 - yes\n1 - no"));
                 }
-                catch (NumberFormatException nfe){
+                catch (NumberFormatException nfe) {
                     System.err.println("You must enter an integer.");
                     System.err.println("Exception: " + nfe + "\n");
                 }
