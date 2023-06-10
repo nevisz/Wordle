@@ -13,7 +13,7 @@ public class Main_ {
                 Board board = new Board();
                 System.out.println("Word: " + board.getWord().toUpperCase() + "\n");
 
-                while(!board.isDone()) {
+                while (!board.isDone()) {
                     // v strange...it only exits the while loop when there's print or println
                     // otherwise it remains stuck in the loop, even if the condition is false
                     System.out.print("");
