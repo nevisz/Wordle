@@ -12,7 +12,11 @@ import javax.swing.JButton;
 import java.io.File;
 import java.io.IOException;
 
-// first word - (28,93)
+
+/*
+ * This class designs a subclass of JFrame that will be the Wordle window. It has custom methods
+ * that help fulfill the functions/innerworkings of the game.
+ */
 
 public class Board extends JFrame implements ActionListener {
 
@@ -20,10 +24,10 @@ public class Board extends JFrame implements ActionListener {
     private JTextField textField;
     private JButton button;
 
-    ArrayList<String> wordL;
+    ArrayList<String> wordL; // contains the 5 letters of the word to be guessed
     private String playerGuess;
-    private int currRound;
-    private int greenCount; // accounts for current row
+    private int currRound; // is equal to the current row number
+    private int greenCount; // accounts for green tiles of the current row
 
     public Board() throws IOException {
 
@@ -32,7 +36,7 @@ public class Board extends JFrame implements ActionListener {
         currRound = 0;
         greenCount = 0;
 
-        // frame components
+        // FRAME COMPONENTS SETUP
         panel = new BoardPanel();
         textField = new JTextField(10);
         textField.setBounds(105,455,100,25);
@@ -40,7 +44,7 @@ public class Board extends JFrame implements ActionListener {
         button.setBounds(214,453,30,30);
         button.addActionListener(this);
 
-        // frame setup (adding components, etc)
+        // FRAME SETUP (adding components, etc)
         add(textField);
         add(button);
         add(panel); pack();
@@ -49,23 +53,34 @@ public class Board extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setVisible(true);
 
-        // reading word from file
+        // READING WORD FROM FILE
         Scanner sc = new Scanner(new File("5_letters.csv"));  
-        int count = 1;
+        int count = 2;
 
         Random rand = new Random();
         int startNum = rand.nextInt(0,25);
-        int wordRow = rand.nextInt(startNum*100,(startNum*100)+101);
+        int wordLine = rand.nextInt(startNum*100,(startNum*100)+101); // line # of the word to be guessed
         
-        sc.nextLine();
-        while (count < wordRow) {
+        sc.nextLine(); // line 1 only contains numbers, sc is now at the start of line 2
+        // skipping lines of the file until it reaches the desired line #
+        // if wordLine = 0,1 or 2 it won't skip the current line but read it instead
+        while (count < wordLine) { 
             sc.nextLine();
             count++;
         }
         for (String str : sc.nextLine().split(",")) { wordL.add(str); }
+
     }
 
-    public void actionPerformed(ActionEvent e) { // pressing button
+    /**
+     * Button action - checks the input of the text field and changes the current row of squares on the
+     * board accordingly
+     * 
+     * @param g - ActionEvent object 
+     * @return void
+	 */
+
+    public void actionPerformed(ActionEvent e) { 
 
         greenCount = 0;
 
@@ -77,13 +92,12 @@ public class Board extends JFrame implements ActionListener {
             System.out.println("Guess #" + Integer.toString(currRound+1) + ": " + playerGuess.toUpperCase());
             textField.setText("");
 
-            // comparing playerGuess to word and making changes to the tiles (of the current row) accordingly
             String coord = "";
 
             for (int i = 0; i<5; i++) {
 
                 coord = Integer.toString(currRound)+Integer.toString(i);
-                System.out.println("Checking tile " + coord);
+                System.out.println("Checking tile " + coord + "...");
                 panel.changeLetter(coord,playerGuess.substring(i,i+1).toUpperCase());
             
                 if (wordL.get(i).equalsIgnoreCase(playerGuess.substring(i,i+1))) {
@@ -105,17 +119,46 @@ public class Board extends JFrame implements ActionListener {
         return word;
     }
 
+    /**
+     * Changes the letter field of a Tile object in the HashMap of the BoardPanel object
+     * 
+     * @param coord - the key of the Tile object
+     * @param letter - the desired letter
+     * @return void
+	 */
+
     public void changeLetter(String coord, String letter) {
         panel.changeLetter(coord,letter);
     }
+
+    /**
+     * Calls changeFillColour() of the BoardPanel class, desired colour is green
+     * 
+     * @param coord - the key of the Tile object
+     * @return void
+	 */
 
     public void greenFill(String coord) {
         panel.changeFillColour(coord,0x5BA654);
     }
 
+    /**
+     * Calls changeFillColour() of the BoardPanel class, desired colour is yellow
+     * 
+     * @param coord - the key of the Tile object
+     * @return void
+	 */
+
     public void yellowFill(String coord) {
         panel.changeFillColour(coord,0xBCB850);
     }
+
+    /**
+     * Calls changeFillColour() of the BoardPanel class, desired colour is grey
+     * 
+     * @param coord - the key of the Tile object
+     * @return void
+	 */
 
     public void greyFill(String coord) {
         panel.changeFillColour(coord,0x7D7D7D);
@@ -125,4 +168,11 @@ public class Board extends JFrame implements ActionListener {
         return (currRound>5) || (greenCount == 5);
     }
     
+}
+
+class InvalidInputException extends RuntimeException {
+	public InvalidInputException(){}
+	public InvalidInputException(String message){
+		super(message);
+	}
 }
