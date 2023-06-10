@@ -3,7 +3,7 @@ public class Tile {
 
     private String letter;
     private int xValue; private int yValue; // coordinate of square and square border
-    private int xLetter; private int yLetter; // coordinate of text
+    private int xLetter; private int yLetter; // coordinate of letter
 
     final private int sideLength = 50;
     final private int borderColour = 0x555555;
