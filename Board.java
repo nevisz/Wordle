@@ -78,7 +78,7 @@ public class Board extends JFrame implements ActionListener {
      * 
      * @param g - ActionEvent object 
      * @return void
-	 */
+     */
 
     public void actionPerformed(ActionEvent e) { 
 
@@ -136,7 +136,7 @@ public class Board extends JFrame implements ActionListener {
      * 
      * @param coord - the key of the Tile object
      * @return void
-	 */
+     */
 
     public void greenFill(String coord) {
         panel.changeFillColour(coord,0x5BA654);
@@ -147,7 +147,7 @@ public class Board extends JFrame implements ActionListener {
      * 
      * @param coord - the key of the Tile object
      * @return void
-	 */
+     */
 
     public void yellowFill(String coord) {
         panel.changeFillColour(coord,0xBCB850);
@@ -158,7 +158,7 @@ public class Board extends JFrame implements ActionListener {
      * 
      * @param coord - the key of the Tile object
      * @return void
-	 */
+     */
 
     public void greyFill(String coord) {
         panel.changeFillColour(coord,0x7D7D7D);
@@ -168,11 +168,4 @@ public class Board extends JFrame implements ActionListener {
         return (currRound>5) || (greenCount == 5);
     }
     
-}
-
-class InvalidInputException extends RuntimeException {
-	public InvalidInputException(){}
-	public InvalidInputException(String message){
-		super(message);
-	}
 }
