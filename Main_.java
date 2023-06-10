@@ -29,10 +29,10 @@ public class Main_ {
                     playAgain = Integer.parseInt(JOptionPane.showInputDialog(null, "Play again?"
                     + "\n0 - yes\n1 - no"));
                 }
-		        catch (NumberFormatException nfe){
-			        System.err.println("You must enter an integer.");
-			        System.err.println("Exception: " + nfe + "\n");
-		        }
+                catch (NumberFormatException nfe){
+                    System.err.println("You must enter an integer.");
+                    System.err.println("Exception: " + nfe + "\n");
+                }
                 if (playAgain == 0 || playAgain == 1) { choiceIsValid = true; }
             }
             if (playAgain == 1) { break; }
