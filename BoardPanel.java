@@ -38,7 +38,7 @@ public class BoardPanel extends JPanel {
         }
     }
 
-	/**
+    /**
      * Draws on JPanel
      * 
      * The arguments of some Graphics2D methods utilize the fields of tempTile (Tile object)
@@ -46,7 +46,7 @@ public class BoardPanel extends JPanel {
      * 
      * @param g - Graphics object 
      * @return void
-	 */
+     */
     
     public void paint(Graphics g) {
 
@@ -90,7 +90,7 @@ public class BoardPanel extends JPanel {
      * @param coord - the key of the Tile object
      * @param letter - the desired letter
      * @return void
-	 */
+     */
 
     public void changeLetter(String coord, String letter) {
         tiles.get(coord).setLetter(letter);
@@ -103,44 +103,7 @@ public class BoardPanel extends JPanel {
      * @param coord - the key of the Tile object
      * @param hexColour - the desired colour in hex
      * @return void
-	 */
-
-    public void changeFillColour(String coord, int hexColour) {
-        tiles.get(coord).setFillColour(hexColour);
-        repaint();
-    }
-
-    public Tile getTile(String coord) {
-        return tiles.get(coord);
-    }
-    
-}
-
-        for (int i = 0; i<6; i++) {
-            for (int i2 = 0; i2<5; i2++) {
-                Tile tempTile = tiles.get(Integer.toString(i)+Integer.toString(i2));
-
-                g2.setPaint(new Color(tempTile.getFillColour()));
-                g2.fillRect(tempTile.getX(),tempTile.getY(),tempTile.getSideLength(),tempTile.getSideLength());
-                g2.setPaint(lightGrey);
-                g2.drawRect(tempTile.getX(),tempTile.getY(),tempTile.getSideLength(),tempTile.getSideLength());
-
-                g2.setFont(new Font("Aharoni", Font.BOLD, 20));
-                g2.setPaint(Color.WHITE);
-                g2.drawString(tempTile.getLetter(),tempTile.getXLetter(),tempTile.getYLetter());
-            }
-        }
-
-        g2.setStroke(new BasicStroke(1));
-        g2.setPaint(lightGrey);
-        g2.drawLine(0,438,310,438); // starting point, endpoint
-
-    }
-
-    public void changeLetter(String coord, String letter) {
-        tiles.get(coord).setLetter(letter);
-        repaint();
-    }
+     */
 
     public void changeFillColour(String coord, int hexColour) {
         tiles.get(coord).setFillColour(hexColour);
