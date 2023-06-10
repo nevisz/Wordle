@@ -8,7 +8,7 @@ public class Main_ {
         int playAgain = -1;
 
         while (true) {
-            //
+            
             try {
                 Board board = new Board();
                 System.out.println("Word: " + board.getWord().toUpperCase() + "\n");
