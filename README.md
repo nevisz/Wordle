@@ -8,4 +8,4 @@ NOTE: Some of the 5-letter words may be uncommon or archaic
 
 ---------- ``Bugs:
 
-	1. The text field typically appears in the top-left corner after the player presses the button, however it disappears once the player maximizes/minimizes the window (w 	the board)
+	1. The text field typically appears in the top-left corner after the player presses the button, however it disappears once the player maximizes/minimizes the window
