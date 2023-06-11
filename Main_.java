@@ -12,7 +12,7 @@ public class Main_ {
             
             try {
                 Board board = new Board();
-                System.out.println("Word: " + board.getWord().toUpperCase() + "\n"); // can comment this out
+                System.out.println("Word: " + board.getWord().toUpperCase() + "\n"); // **can comment this out !!
 
                 while(!board.isDone()) {
                     // v strange...it only exits the while loop when there's print or println
