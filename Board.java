@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import java.awt.Color;
 import java.awt.event.*;
@@ -24,15 +25,21 @@ public class Board extends JFrame implements ActionListener {
     private JTextField textField;
     private JButton button;
 
-    ArrayList<String> wordL; // contains the 5 letters of the word to be guessed
-    private String playerGuess;
+    String wordStr; // keeps game's word in orignal state
+    HashMap<String,int[]> wordMap; // letter, [# of occurences in word that need to be considered, yellowCount]
+    String playerGuessStr; // keeps player's word in original state
+    ArrayList<String> playerGuessL; // is modified, each element is in the format letter,index
+
     private int currRound; // is equal to the current row number
     private int greenCount; // accounts for green tiles of the current row
 
     public Board() throws IOException {
 
-        wordL = new ArrayList<String>();
-        playerGuess = "";
+        wordStr = "";
+        wordMap = new HashMap<String,int[]>();
+        playerGuessStr = "";
+        playerGuessL = new ArrayList<String>();
+
         currRound = 0;
         greenCount = 0;
 
@@ -68,8 +75,21 @@ public class Board extends JFrame implements ActionListener {
             sc.nextLine();
             count++;
         }
-        for (String str : sc.nextLine().split(",")) { wordL.add(str); }
-
+        int i = 0;
+        // populating wordStr, wordL & wordMap
+        for (String ch : sc.nextLine().split(",")) {
+            wordStr += ch;
+            if (!wordMap.containsKey(ch)) {
+                int[] list = {1,0};
+                wordMap.put(ch,list);
+            }
+            else {
+                int[] list = wordMap.get(ch);
+                list[0]++;
+                wordMap.put(ch,list);
+            }
+            i++;
+        }
     }
 
     /**
@@ -77,46 +97,91 @@ public class Board extends JFrame implements ActionListener {
      * board accordingly
      * 
      * @param g - ActionEvent object 
-     * @return void
      */
 
     public void actionPerformed(ActionEvent e) { 
 
+        resetWordMap();
+        playerGuessL.clear(); // so it only contains the letters of the player's next guess
         greenCount = 0;
 
-        if (!(textField.getText().equals("") ||
-            textField.getText().contains(" ") ||
-            textField.getText().length() != 5)) {
+        String playerGuessStr = textField.getText().toLowerCase();
+        textField.setText("");
 
-            playerGuess = textField.getText();
-            System.out.println("Guess #" + Integer.toString(currRound+1) + ": " + playerGuess.toUpperCase());
-            textField.setText("");
+        if (!(playerGuessStr.equals("") || playerGuessStr.contains(" ") ||
+            playerGuessStr.length() != 5)) {
+
+            for (int i = 0; i<playerGuessStr.length(); i++) {
+                playerGuessL.add(playerGuessStr.substring(i,i+1)+","+i);
+            }
+
+            System.out.println("---------------------------------------------------");
+            System.out.println("Guess #" + Integer.toString(currRound+1) + ": " + playerGuessL.toString() + "\n");
 
             String coord = "";
 
+            // IDENTIFYING GREEN AND TRUE GREY TILES (letters that aren't in the word) 
+            // can't use for (String ch : wordMap.keySet()) since HashMaps don't maintain insertion order
             for (int i = 0; i<5; i++) {
 
-                coord = Integer.toString(currRound)+Integer.toString(i);
+                String wordChar = wordStr.substring(i,i+1);
+                String guessChar = playerGuessStr.substring(i,i+1);
+
+                coord = Integer.toString(currRound)+i;
                 System.out.println("Checking tile " + coord + "...");
-                panel.changeLetter(coord,playerGuess.substring(i,i+1).toUpperCase());
-            
-                if (wordL.get(i).equalsIgnoreCase(playerGuess.substring(i,i+1))) {
+                panel.changeLetter(coord,guessChar.toUpperCase());
+
+                // playerGuessL is used later, for a second linear check
+                // Elements are removed from it so that there isn't a repeat (checking a verified green or true
+                // grey tile
+
+                if (wordChar.equals(guessChar)) {
                     greenFill(coord); greenCount++;
+                    playerGuessL.remove(wordChar+","+i); // occurence of the letter is no longer needed
+
+                    int[] list = wordMap.get(wordChar);
+                    list[0]--; // occurence of the letter is no longer needed - letter count is decremented
+                    wordMap.put(wordChar,list);
                 }
-                else if (wordL.contains(playerGuess.substring(i,i+1))){ yellowFill(coord); }
-                else { greyFill(coord); }
-
+                else if (!wordStr.contains(guessChar)) {
+                    greyFill(coord);
+                    playerGuessL.remove(guessChar+","+i); // occurence of the letter is no longer needed
+                }
             }
-            System.out.println("Green count: " + greenCount + "\n");
-            currRound++;
 
+            // IDENTIFYING YELLOW AND OTHER GREY TILES 
+            // The remaining letters in playerGuessL ARE in the word but in the wrong position
+            // Also the player's guess may have more than enough of this letter. Either..
+            //      > occurences of the letter are already in the right positions and therefore
+            //      another occurrence (in the wrong position) is insignificant
+            //      > occurrences of the letter in the wrong position = the # of times the letter appears in
+            //      the word and therefore another occurrence (in another wrong position) is insigificant
+            for (int i = 0; i<playerGuessL.size(); i++) {
+
+                String guessChar = playerGuessL.get(i).substring(0,1);
+                coord = Integer.toString(currRound)+playerGuessL.get(i).substring(2,3);
+                
+                int[] list = wordMap.get(guessChar);
+
+                // It can't be ==, otherwise a tile will turn yellow when
+                // the # of yellow tiles already == the # of occurences in the word
+                // But by entering the if statement, the # of yellow tiles for a specified letter in the word
+                // is incremented
+                if (list[1]<list[0]) { 
+                    yellowFill(coord);
+                    list[1]++;
+                    wordMap.put(guessChar,list);
+                }
+                else { greyFill(coord); }
+            } 
+            currRound++;
+            System.out.println("\nGreen Count: " + greenCount);
+            System.out.println("---------------------------------------------------");
         }
     }
 
     public String getWord() {
-        String word = "";
-        for (String str : wordL) { word += str; }
-        return word;
+        return wordStr.toUpperCase();
     }
 
     /**
@@ -124,7 +189,6 @@ public class Board extends JFrame implements ActionListener {
      * 
      * @param coord - the key of the Tile object
      * @param letter - the desired letter
-     * @return void
 	 */
 
     public void changeLetter(String coord, String letter) {
@@ -135,7 +199,6 @@ public class Board extends JFrame implements ActionListener {
      * Calls changeFillColour() of the BoardPanel class, desired colour is green
      * 
      * @param coord - the key of the Tile object
-     * @return void
      */
 
     public void greenFill(String coord) {
@@ -146,7 +209,6 @@ public class Board extends JFrame implements ActionListener {
      * Calls changeFillColour() of the BoardPanel class, desired colour is yellow
      * 
      * @param coord - the key of the Tile object
-     * @return void
      */
 
     public void yellowFill(String coord) {
@@ -157,11 +219,30 @@ public class Board extends JFrame implements ActionListener {
      * Calls changeFillColour() of the BoardPanel class, desired colour is grey
      * 
      * @param coord - the key of the Tile object
-     * @return void
      */
 
     public void greyFill(String coord) {
         panel.changeFillColour(coord,0x7D7D7D);
+    }
+
+    /**
+     * Repopulates wordMap such that it contains the initial info on the word to be guessed
+	 */
+
+    public void resetWordMap() {
+        wordMap.clear();
+        for (int i = 0; i<wordStr.length(); i++) {
+            String wordChar = wordStr.substring(i,i+1);
+            if (!wordMap.containsKey(wordChar)) {
+                int[] list = {1,0};
+                wordMap.put(wordChar,list);
+            }
+            else {
+                int[] list = wordMap.get(wordChar);
+                list[0]++;
+                wordMap.put(wordChar,list);
+            }
+        }
     }
 
     public boolean isDone() {
