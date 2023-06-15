@@ -25,10 +25,10 @@ public class Board extends JFrame implements ActionListener {
     private JTextField textField;
     private JButton button;
 
-    String wordStr; // keeps game's word in orignal state
-    HashMap<String,int[]> wordMap; // letter, [# of occurences in word that need to be considered, yellowCount]
+    private String wordStr; // keeps game's word in orignal state
+    private HashMap<String,int[]> wordMap; // letter, [# of occurences in word that need to be considered, yellowCount]
     String playerGuessStr; // keeps player's word in original state
-    ArrayList<String> playerGuessL; // is modified, each element is in the format letter,index
+    private ArrayList<String> playerGuessL; // is modified, each element is in the format letter,index
 
     private int currRound; // is equal to the current row number
     private int greenCount; // accounts for green tiles of the current row
