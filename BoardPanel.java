@@ -45,7 +45,6 @@ public class BoardPanel extends JPanel {
      *   > ie. setPaint() uses fillColour so that the colours of the squares are updated on the panel
      * 
      * @param g - Graphics object 
-     * @return void
      */
     
     public void paint(Graphics g) {
@@ -89,7 +88,6 @@ public class BoardPanel extends JPanel {
      * 
      * @param coord - the key of the Tile object
      * @param letter - the desired letter
-     * @return void
      */
 
     public void changeLetter(String coord, String letter) {
@@ -102,7 +100,6 @@ public class BoardPanel extends JPanel {
      * 
      * @param coord - the key of the Tile object
      * @param hexColour - the desired colour in hex
-     * @return void
      */
 
     public void changeFillColour(String coord, int hexColour) {
