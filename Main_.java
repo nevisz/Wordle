@@ -14,11 +14,8 @@ public class Main_ {
                 Board board = new Board();
                 System.out.println("Word: " + board.getWord().toUpperCase() + "\n"); // **can comment this out !!
 
-                while(!board.isDone()) {
-                    // v strange...it only exits the while loop when there's print or println
-                    // otherwise it remains stuck in the loop, even if the condition is false
-                    System.out.print("");
-                }
+                while(!board.isDone()) { System.out.print(""); 
+                                       }
                 JOptionPane.showMessageDialog(null, "The word was... " + 
                 board.getWord().toUpperCase() + " !!!");
             }
