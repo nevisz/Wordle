@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 public class BoardPanel extends JPanel {
 
     private HashMap<String,Tile> tiles; 
-    Tile tile;
 
     public BoardPanel() {
 
