@@ -35,49 +35,13 @@ public class Board extends JFrame implements ActionListener {
 
     public Board() throws IOException {
 
-        wordStr = "";
-        wordMap = new HashMap<String,int[]>();
-        playerGuessStr = "";
-        playerGuessL = new ArrayList<String>();
+        initialization();
+        // getting the 5-letter word that will be guessed
+        String wordRead = readWord();
 
-        currRound = 0;
-        greenCount = 0;
-
-        // FRAME COMPONENTS SETUP
-        panel = new BoardPanel();
-        textField = new JTextField(10);
-        textField.setBounds(105,455,100,25);
-        button = new JButton(">");
-        button.setBounds(214,453,30,30);
-        button.addActionListener(this);
-
-        // FRAME SETUP (adding components, etc)
-        add(textField);
-        add(button);
-        add(panel); pack();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBackground(new Color(0x151515));
-        setLocationRelativeTo(null);
-        setVisible(true);
-
-        // READING WORD FROM FILE
-        Scanner sc = new Scanner(new File("5_letters.csv"));  
-        int count = 2;
-
-        Random rand = new Random();
-        int startNum = rand.nextInt(0,25);
-        int wordLine = rand.nextInt(startNum*100,(startNum*100)+101); // line # of the word to be guessed
-        
-        sc.nextLine(); // line 1 only contains numbers, sc is now at the start of line 2
-        // skipping lines of the file until it reaches the desired line #
-        // if wordLine = 0,1 or 2 it won't skip the current line but read it instead
-        while (count < wordLine) { 
-            sc.nextLine();
-            count++;
-        }
-        int i = 0;
         // populating wordStr, wordL & wordMap
-        for (String ch : sc.nextLine().split(",")) {
+        int i = 0;
+        for (String ch : wordRead.split(",")) {
             wordStr += ch;
             if (!wordMap.containsKey(ch)) {
                 int[] list = {1,0};
@@ -115,9 +79,6 @@ public class Board extends JFrame implements ActionListener {
                 playerGuessL.add(playerGuessStr.substring(i,i+1)+","+i);
             }
 
-            System.out.println("---------------------------------------------------");
-            System.out.println("Guess #" + Integer.toString(currRound+1) + ": " + playerGuessL.toString() + "\n");
-
             String coord = "";
 
             // IDENTIFYING GREEN AND TRUE GREY TILES (letters that aren't in the word) 
@@ -128,7 +89,6 @@ public class Board extends JFrame implements ActionListener {
                 String guessChar = playerGuessStr.substring(i,i+1);
 
                 coord = Integer.toString(currRound)+i;
-                System.out.println("Checking tile " + coord + "...");
                 panel.changeLetter(coord,guessChar.toUpperCase());
 
                 // playerGuessL is used later, for a second linear check
@@ -175,9 +135,90 @@ public class Board extends JFrame implements ActionListener {
                 else { greyFill(coord); }
             } 
             currRound++;
-            System.out.println("\nGreen Count: " + greenCount);
-            System.out.println("---------------------------------------------------");
         }
+    }
+
+    /**
+     * Initializes class fields and sets up the frame components
+	 */
+
+    public void initialization(){
+
+        wordStr = "";
+        wordMap = new HashMap<String,int[]>();
+        playerGuessStr = "";
+        playerGuessL = new ArrayList<String>();
+
+        currRound = 0;
+        greenCount = 0;
+
+        // FRAME COMPONENTS SETUP
+        panel = new BoardPanel();
+        textField = new JTextField(10);
+        textField.setBounds(105,455,100,25);
+        button = new JButton(">");
+        button.setBounds(214,453,30,30);
+        button.addActionListener(this);
+
+        // FRAME SETUP (adding components, etc)
+        add(textField);
+        add(button);
+        add(panel); pack();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBackground(new Color(0x151515));
+        setLocationRelativeTo(null);
+        setVisible(true);
+
+    }
+
+    /**
+     * Randomly reads a line (with a 5-letter word) from the csv file and returns it.
+	 */
+
+    public String readWord() throws IOException {
+
+        Scanner sc = new Scanner(new File("5_letters.csv"));  
+        int count = 2;
+        String word = "";
+
+        Random rand = new Random();
+        int startNum = rand.nextInt(0,25);
+        int wordLine = rand.nextInt(startNum*100,(startNum*100)+101); // line # of the word to be guessed
+        
+        sc.nextLine(); // line 1 only contains numbers, sc is now at the start of line 2
+        // skipping lines of the file until it reaches the desired line #
+        // if wordLine = 0,1 or 2 it won't skip the current line but read it instead
+        while (count < wordLine) { 
+            sc.nextLine();
+            count++;
+        }
+        word = sc.nextLine();
+        return word;
+
+    }
+
+    /**
+     * Repopulates wordMap such that it contains the initial info on the word to be guessed
+	 */
+
+    public void resetWordMap() {
+        wordMap.clear();
+        for (int i = 0; i<wordStr.length(); i++) {
+            String wordChar = wordStr.substring(i,i+1);
+            if (!wordMap.containsKey(wordChar)) {
+                int[] list = {1,0};
+                wordMap.put(wordChar,list);
+            }
+            else {
+                int[] list = wordMap.get(wordChar);
+                list[0]++;
+                wordMap.put(wordChar,list);
+            }
+        }
+    }
+
+    public boolean isDone() {
+        return (currRound>5) || (greenCount == 5);
     }
 
     public String getWord() {
@@ -223,30 +264,6 @@ public class Board extends JFrame implements ActionListener {
 
     public void greyFill(String coord) {
         panel.changeFillColour(coord,0x7D7D7D);
-    }
-
-    /**
-     * Repopulates wordMap such that it contains the initial info on the word to be guessed
-	 */
-
-    public void resetWordMap() {
-        wordMap.clear();
-        for (int i = 0; i<wordStr.length(); i++) {
-            String wordChar = wordStr.substring(i,i+1);
-            if (!wordMap.containsKey(wordChar)) {
-                int[] list = {1,0};
-                wordMap.put(wordChar,list);
-            }
-            else {
-                int[] list = wordMap.get(wordChar);
-                list[0]++;
-                wordMap.put(wordChar,list);
-            }
-        }
-    }
-
-    public boolean isDone() {
-        return (currRound>5) || (greenCount == 5);
     }
     
 }
