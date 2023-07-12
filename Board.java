@@ -142,7 +142,7 @@ public class Board extends JFrame implements ActionListener {
      * Initializes class fields and sets up the frame components
      */
 
-    public void initialization(){
+    private void initialization(){
 
         wordStr = "";
         wordMap = new HashMap<String,int[]>();
@@ -175,7 +175,7 @@ public class Board extends JFrame implements ActionListener {
      * Randomly reads a line (with a 5-letter word) from the csv file and returns it.
      */
 
-    public String readWord() throws IOException {
+    private String readWord() throws IOException {
 
         Scanner sc = new Scanner(new File("5_letters.csv"));  
         int count = 2;
@@ -201,7 +201,7 @@ public class Board extends JFrame implements ActionListener {
      * Repopulates wordMap such that it contains the initial info on the word to be guessed
      */
 
-    public void resetWordMap() {
+    private void resetWordMap() {
         wordMap.clear();
         for (int i = 0; i<wordStr.length(); i++) {
             String wordChar = wordStr.substring(i,i+1);
