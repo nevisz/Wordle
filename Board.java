@@ -140,7 +140,7 @@ public class Board extends JFrame implements ActionListener {
 
     /**
      * Initializes class fields and sets up the frame components
-	 */
+     */
 
     public void initialization(){
 
@@ -173,7 +173,7 @@ public class Board extends JFrame implements ActionListener {
 
     /**
      * Randomly reads a line (with a 5-letter word) from the csv file and returns it.
-	 */
+     */
 
     public String readWord() throws IOException {
 
