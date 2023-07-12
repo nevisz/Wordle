@@ -199,7 +199,7 @@ public class Board extends JFrame implements ActionListener {
 
     /**
      * Repopulates wordMap such that it contains the initial info on the word to be guessed
-	 */
+     */
 
     public void resetWordMap() {
         wordMap.clear();
@@ -230,7 +230,7 @@ public class Board extends JFrame implements ActionListener {
      * 
      * @param coord - the key of the Tile object
      * @param letter - the desired letter
-	 */
+     */
 
     public void changeLetter(String coord, String letter) {
         panel.changeLetter(coord,letter);
@@ -265,5 +265,7 @@ public class Board extends JFrame implements ActionListener {
     public void greyFill(String coord) {
         panel.changeFillColour(coord,0x7D7D7D);
     }
+    
+}
     
 }
