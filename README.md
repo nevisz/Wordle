@@ -1,5 +1,3 @@
-──★ ˙🍓 ̟ !! ───────────────────────────────────────────────
-
 NOTE: Some of the 5-letter words may be uncommon or archaic
 
 ---------- ``Features that haven't been added:
@@ -11,5 +9,3 @@ NOTE: Some of the 5-letter words may be uncommon or archaic
 ---------- ``Bugs:
 
 	1. The text field typically appears in the top-left corner after an input, however it disappears once the player maximizes/minimizes the window (w the board)
-
- ─────────────────────────────────────────────────────────────
