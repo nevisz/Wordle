@@ -39,7 +39,7 @@ public class Board extends JFrame implements ActionListener {
         // getting the 5-letter word that will be guessed
         String wordRead = readWord();
 
-        // populating wordStr, wordL & wordMap
+        // populating wordStr & wordMap
         int i = 0;
         for (String ch : wordRead.split(",")) {
             wordStr += ch;
