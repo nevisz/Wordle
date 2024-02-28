@@ -1,3 +1,4 @@
+LAST UPDATE: Aug 6, 2023  
 NOTE: Some of the 5-letter words may be uncommon or archaic
 
 ---------- ``Features that haven't been added:
